@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import AddList from './AddList'
 import ListHeader from './ListHeader'
 import * as listCalls from './apiCalls/apiList'
+import {getTodos, removeTodo} from './apiCalls/apiTodo'
 
 class Lists extends Component {
   constructor(props) {
@@ -31,9 +32,15 @@ class Lists extends Component {
   async deleteList(list) {
     let deletedList = await listCalls.deleteList(list)
     const newList = this.state.lists.filter(list => list._id !== deletedList._id)
+    let todos = await getTodos()
+    todos.forEach(async todo => {
+      if (deletedList._id === todo.listId) {
+        await removeTodo(todo)
+      }
+    });
     this.setState({lists: newList})
-    // still need to delete todos associated with deleted list
   }
+
 
   render() {
     const lists = this.state.lists.map(list => 
