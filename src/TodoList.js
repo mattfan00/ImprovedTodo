@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import TodoItem from './TodoItem'
 import TodoForm from './TodoForm'
 
+
 class TodoList extends Component {
   constructor(props) {
     super(props)
@@ -19,8 +20,9 @@ class TodoList extends Component {
     .then((response) => {
       return response.json()
     })
-    .then((data) => {
-      this.setState({todos: data})
+    .then((todos) => {
+      const newTodos = todos.filter(todo => todo.listId === this.props.listId)
+      this.setState({todos: newTodos})
     })
   }
 
@@ -30,7 +32,10 @@ class TodoList extends Component {
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
-      body: JSON.stringify({name: val})
+      body: JSON.stringify({
+        name: val,
+        listId: this.props.listId
+      })
     })
     .then((response) => response.json())
     .then((newTodo) => {
@@ -88,8 +93,8 @@ class TodoList extends Component {
       <div>
         <ul>
           {todoList}
+          <TodoForm addTodo={this.addTodo} />
         </ul>
-        <TodoForm addTodo={this.addTodo} />
       </div>
     )
   }
