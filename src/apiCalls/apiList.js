@@ -27,6 +27,7 @@ export async function deleteList(list) {
 }
 
 export async function updateDisplay(list) {
+  console.log('turning display to ' + !list.display.toString())
   return fetch('http://localhost:3001/api/lists/' + list._id, {
     method: 'put',
     headers: new Headers({

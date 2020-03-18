@@ -1,0 +1,31 @@
+.App {
+  font-family: 'Lato', sans-serif;
+
+}
+  
+.dock {
+  position: fixed;
+  width: 200px;
+  padding-left: 75px;
+  padding-top: 100px;
+  height: 100%;
+  background-color: #f5f5f5;
+}
+
+.dock-item {
+  padding: 7px 15px;
+  cursor: pointer;
+  transition-duration: .15s;
+}
+
+.dock-item:hover {
+  background-color: white;
+}
+
+.dock-item-delete {
+  float: right;
+}
+
+.main {
+  margin-left: 350px;
+}

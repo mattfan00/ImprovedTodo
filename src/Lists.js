@@ -10,7 +10,7 @@ class Lists extends Component {
     super(props)
     this.state = {
       activeLists: [],
-      dockedLists: []
+      dock: []
     }
 
     this.addList = this.addList.bind(this)
@@ -23,22 +23,25 @@ class Lists extends Component {
   async loadLists() {
     let lists = await listCalls.getLists()
     const activeLists = lists.filter(list => list.display === true)
-    const dockedLists = lists.filter(list => list.display === false)
+    // const dockedLists = lists.filter(list => list.display === false)
     this.setState({
       activeLists: activeLists,
-      dockedLists: dockedLists
+      dock: lists
     })
   }
 
   async addList(val) {
     let newList = await listCalls.addList(val)
-    this.setState({activeLists: [...this.state.activeLists, newList]})
+    this.setState({
+      activeLists: [...this.state.activeLists, newList],
+      dock: [...this.state.dock, newList]
+    })
   }
 
   async deleteList(list) {
     let deletedList = await listCalls.deleteList(list)
     const newActiveLists = this.state.activeLists.filter(list => list._id !== deletedList._id)
-    const newDockedLists = this.state.dockedLists.filter(list => list._id !== deletedList._id)
+    const newDock = this.state.dock.filter(list => list._id !== deletedList._id)
 
     // delete the todos associated with the list 
     let todos = await getTodos()
@@ -49,25 +52,31 @@ class Lists extends Component {
     });
     this.setState({
       activeLists: newActiveLists,
-      dockedLists: newDockedLists
+      dock: newDock
     })
   }
 
   async changeListDisplay(list) {
     let updatedList = await listCalls.updateDisplay(list)
     var newActiveLists
-    var newDockedLists
+    
     if (updatedList.display) {
       newActiveLists = [...this.state.activeLists, updatedList]
-      newDockedLists = this.state.dockedLists.filter(list => list._id !== updatedList._id)
     } else {
       newActiveLists = this.state.activeLists.filter(list => list._id !== updatedList._id)
-      newDockedLists = [...this.state.dockedLists, updatedList]
     }
+
+    const newDock = this.state.dock.map(list => {
+      if (list._id === updatedList._id) {
+        return {...list, display: !list.display}
+      } else {
+        return list
+      }
+    })
 
     this.setState({
       activeLists: newActiveLists,
-      dockedLists: newDockedLists
+      dock: newDock
     })
   }
 
@@ -83,10 +92,11 @@ class Lists extends Component {
       /> 
     )
 
-    const dockedLists = this.state.dockedLists.map(list => 
-      <DockedList 
+    const dockedLists = this.state.dock.map(list => 
+      <DockedList
         key={list._id}
         name={list.name}
+        display={list.display}
         deleteList={this.deleteList.bind(this, list)}
         changeListDisplay={this.changeListDisplay.bind(this, list)} 
       />
@@ -94,10 +104,15 @@ class Lists extends Component {
 
     return (
       <div>
-        <AddList addList={this.addList} />
-        {activeLists}
-        {dockedLists}
-      </div>
+        <div className="dock">
+          {dockedLists}
+        </div>
+        <div className="main">
+          <AddList addList={this.addList} />
+          {activeLists}
+        </div>
+        
+      </div> 
     )
   }
 }
