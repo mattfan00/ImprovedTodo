@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import AddList from './AddList'
 import ListHeader from './ListHeader'
+import * as listCalls from './apiCalls/apiList'
 
 class Lists extends Component {
   constructor(props) {
@@ -14,42 +15,24 @@ class Lists extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3001/api/lists')
-    .then((response) => response.json())
-    .then((data) => {
-      this.setState({lists: data})
-    })
+    this.loadLists()
   }
 
-  addList(val) {
-    fetch('http://localhost:3001/api/lists', {
-      method: 'post',
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      }),
-      body: JSON.stringify({
-        name: val
-      })
-    })
-    .then((response) => response.json())
-    .then((newList) => {
-      console.log(newList)
-      this.setState({lists: [...this.state.lists, newList]})
-    })
+  async loadLists() {
+    let list = await listCalls.getLists()
+    this.setState({lists: list})
   }
 
-  deleteList(list) {
-    fetch('http://localhost:3001/api/lists/' + list._id, {
-      method: 'delete',
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
-    })
-    .then((response) => response.json())
-    .then((deletedList) => {
-      const newList = this.state.lists.filter(list => list._id !== deletedList._id)
-      this.setState({lists: newList})
-    })
+  async addList(val) {
+    let newList = await listCalls.addList(val)
+    this.setState({lists: [...this.state.lists, newList]})
+  }
+
+  async deleteList(list) {
+    let deletedList = await listCalls.deleteList(list)
+    const newList = this.state.lists.filter(list => list._id !== deletedList._id)
+    this.setState({lists: newList})
+    // still need to delete todos associated with deleted list
   }
 
   render() {

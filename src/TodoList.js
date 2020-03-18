@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import TodoItem from './TodoItem'
 import TodoForm from './TodoForm'
+import * as todoCalls from './apiCalls/apiTodo'
 
 
 class TodoList extends Component {
@@ -16,66 +17,37 @@ class TodoList extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:3001/api/todos')
-    .then((response) => {
-      return response.json()
-    })
-    .then((todos) => {
-      const newTodos = todos.filter(todo => todo.listId === this.props.listId)
-      this.setState({todos: newTodos})
-    })
+    this.loadTodos()
   }
 
-  addTodo(val) {
-    fetch('http://localhost:3001/api/todos', {
-      method: 'post',
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      }),
-      body: JSON.stringify({
-        name: val,
-        listId: this.props.listId
-      })
-    })
-    .then((response) => response.json())
-    .then((newTodo) => {
-      this.setState({todos: [...this.state.todos, newTodo]})
-    })
+  async loadTodos() {
+    let todos = await todoCalls.getTodos()
+    const newTodos = todos.filter(todo => todo.listId === this.props.listId)
+    this.setState({todos: newTodos})
   }
 
-  toggleCompleted(todo) {
-    fetch('http://localhost:3001/api/todos/' + todo._id, {
-      method: 'put',
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      }),
-      body: JSON.stringify({completed: !todo.completed})
-    })
-    .then((response) => response.json())
-    .then((updatedTodo) => {
-      const newTodos = this.state.todos.map(todo => {
-        if(todo._id === updatedTodo._id) {
-          return {...todo, completed: !todo.completed}
-        } else {
-          return todo
-        }
-      })
-      this.setState({todos: newTodos})
-    })
+  async addTodo(val) {
+    let newTodo = await todoCalls.addTodo(val, this.props.listId)
+    this.setState({todos: [...this.state.todos, newTodo]})
   }
 
-  removeTodo(todo) {
-    fetch('http://localhost:3001/api/todos/' + todo._id, {
-      method: 'delete',
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
+  async toggleCompleted(todo) {
+    let updatedTodo = await todoCalls.toggleCompleted(todo)
+    const newTodos = this.state.todos.map(todo => {
+      if(todo._id === updatedTodo._id) {
+        return {...todo, completed: !todo.completed}
+      } else {
+        return todo
+      }
     })
-    .then((response) => response.json())
-    .then((removedTodo) => {
-      const newTodos = this.state.todos.filter(todo => todo._id !== removedTodo._id)
-      this.setState({todos: newTodos})
-    })
+    this.setState({todos: newTodos})
+  }
+
+  async removeTodo(todo) {
+    let removedTodo = await todoCalls.removeTodo(todo)
+    const newTodos = this.state.todos.filter(todo => todo._id !== removedTodo._id)
+    this.setState({todos: newTodos})
+
   }
 
   render() {
