@@ -4,7 +4,7 @@ function TodoItem(props) {
   const isCompleted = props.completed 
 
   return (
-    <li>
+    <div className="todo-item">
       <span onClick={props.toggleCompleted} style={{textDecoration: isCompleted ? 'line-through' : 'none'}}>
         {props.name}
       </span>
@@ -12,7 +12,7 @@ function TodoItem(props) {
       <span onClick={props.removeTodo}>
         X
       </span>
-    </li>
+    </div>
   )
 }
 

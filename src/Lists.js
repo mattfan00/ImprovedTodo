@@ -59,7 +59,7 @@ class Lists extends Component {
   async changeListDisplay(list) {
     let updatedList = await listCalls.updateDisplay(list)
     var newActiveLists
-    
+
     if (updatedList.display) {
       newActiveLists = [...this.state.activeLists, updatedList]
     } else {
@@ -106,10 +106,12 @@ class Lists extends Component {
       <div>
         <div className="dock">
           {dockedLists}
+          <AddList addList={this.addList} />  
         </div>
         <div className="main">
-          <AddList addList={this.addList} />
-          {activeLists}
+          <div className="main-grid">
+            {activeLists}
+          </div>
         </div>
         
       </div> 

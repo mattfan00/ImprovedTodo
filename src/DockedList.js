@@ -5,7 +5,7 @@ function DockedList(props) {
   return (
     <div className="dock-item" onClick={props.changeListDisplay}>
         <span>{props.name}</span> &nbsp;
-        {props.display.toString()}
+        {props.display ? <i className="fas fa-circle fa-xs"></i> : '' }
         {/* <span className="dock-item-delete" onClick={props.deleteList}>X</span> */}
     </div>
   )

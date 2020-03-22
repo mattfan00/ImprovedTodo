@@ -3,11 +3,11 @@ import TodoList from './TodoList'
 
 function ListHeader(props) {
   return (
-    <div>
-      <h2>
+    <div className="main-grid-item">
+      <h3>
         <span onClick={props.changeListDisplay}>{props.name}</span> &nbsp;
         <span onClick={props.deleteList}>X</span>
-      </h2> 
+      </h3> 
       <TodoList listId={props.listId} />
     </div>   
   )
