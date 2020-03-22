@@ -1,5 +1,5 @@
 import React from 'react'
-import TodoList from './TodoList'
+import TodoList from '../Todos/TodoList'
 
 function ListHeader(props) {
   return (
@@ -8,7 +8,10 @@ function ListHeader(props) {
         <span onClick={props.changeListDisplay}>{props.name}</span> &nbsp;
         <span onClick={props.deleteList}>X</span>
       </h3> 
-      <TodoList listId={props.listId} />
+      <TodoList 
+        listId={props.listId}
+        updateNumTodos={props.updateNumTodos}
+     />
     </div>   
   )
 }

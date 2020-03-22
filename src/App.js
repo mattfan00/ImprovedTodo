@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Lists from './Lists'
+import Lists from './Lists/Lists'
 
 function App() {
   return (

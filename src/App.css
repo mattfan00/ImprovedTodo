@@ -124,6 +124,10 @@
   margin-right: 5px;
 }
 
+.add-todo-form>button:focus {
+  outline: 0;
+}
+
 .add-todo-form-add {
   border: 2px solid #16063d;
   color: #16063d;

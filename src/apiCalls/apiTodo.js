@@ -3,6 +3,11 @@ export async function getTodos() {
   .then((response) => response.json())
 }
 
+export async function getTodosFromList(listId) {
+  return fetch('http://localhost:3001/api/lists/' + listId + '/todos')
+  .then((response) => response.json())
+}
+
 export async function addTodo(val, listId) {
   return fetch('http://localhost:3001/api/todos', {
     method: 'post',

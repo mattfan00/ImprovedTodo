@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import TodoItem from './TodoItem'
 import TodoForm from './TodoForm'
-import * as todoCalls from './apiCalls/apiTodo'
+import * as todoCalls from '../apiCalls/apiTodo'
 
 
 class TodoList extends Component {
@@ -21,13 +21,13 @@ class TodoList extends Component {
   }
 
   async loadTodos() {
-    let todos = await todoCalls.getTodos()
-    const newTodos = todos.filter(todo => todo.listId === this.props.listId)
-    this.setState({todos: newTodos})
+    let todos = await todoCalls.getTodosFromList(this.props.listId)
+    this.setState({todos: todos})
   }
 
   async addTodo(val) {
     let newTodo = await todoCalls.addTodo(val, this.props.listId)
+    this.props.updateNumTodos("add", this.props.listId)
     this.setState({todos: [...this.state.todos, newTodo]})
   }
 
@@ -46,8 +46,8 @@ class TodoList extends Component {
   async removeTodo(todo) {
     let removedTodo = await todoCalls.removeTodo(todo)
     const newTodos = this.state.todos.filter(todo => todo._id !== removedTodo._id)
+    this.props.updateNumTodos("remove", this.props.listId)
     this.setState({todos: newTodos})
-
   }
 
   render() {

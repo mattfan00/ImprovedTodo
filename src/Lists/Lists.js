@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import AddList from './AddList'
 import ListHeader from './ListHeader'
 import DockedList from './DockedList'
-import * as listCalls from './apiCalls/apiList'
-import {getTodos, removeTodo} from './apiCalls/apiTodo'
+import * as listCalls from '../apiCalls/apiList'
+import * as todoCalls from '../apiCalls/apiTodo'
+import {getTodos, removeTodo} from '../apiCalls/apiTodo'
 
 class Lists extends Component {
   constructor(props) {
@@ -14,6 +15,8 @@ class Lists extends Component {
     }
 
     this.addList = this.addList.bind(this)
+    this.loadlists = this.loadLists.bind(this)
+    this.updateNumTodos = this.updateNumTodos.bind(this)
   }
 
   componentDidMount() {
@@ -23,6 +26,11 @@ class Lists extends Component {
   async loadLists() {
     let lists = await listCalls.getLists()
     const activeLists = lists.filter(list => list.display === true)
+    lists = await Promise.all(lists.map(async list => {
+      let todos = await todoCalls.getTodosFromList(list._id) 
+      list.numTodos = todos.length
+      return list
+    }))
     // const dockedLists = lists.filter(list => list.display === false)
     this.setState({
       activeLists: activeLists,
@@ -80,6 +88,18 @@ class Lists extends Component {
     })
   }
 
+  updateNumTodos(method, listId) {
+    var newDock = this.state.dock.map(list => {
+      if (list._id === listId) {
+        var newList = {...list, numTodos: (method==="add" ? ++list.numTodos : --list.numTodos)}
+        return newList
+      } else {
+        return list
+      }
+    })
+    this.setState({dock: newDock})
+  }
+
 
   render() {
     const activeLists = this.state.activeLists.map(list => 
@@ -87,6 +107,7 @@ class Lists extends Component {
         key={list._id}
         listId={list._id}
         name={list.name} 
+        updateNumTodos = {this.updateNumTodos}
         deleteList={this.deleteList.bind(this, list)}
         changeListDisplay={this.changeListDisplay.bind(this, list)}
       /> 
@@ -97,6 +118,7 @@ class Lists extends Component {
         key={list._id}
         name={list.name}
         display={list.display}
+        numTodos = {list.numTodos}
         deleteList={this.deleteList.bind(this, list)}
         changeListDisplay={this.changeListDisplay.bind(this, list)} 
       />

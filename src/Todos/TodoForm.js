@@ -45,7 +45,6 @@ class TodoForm extends Component {
           <input placeholder="Add Todo" type="text" value={this.state.value} onChange={this.handleChange}></input>
           <button className={`add-todo-form-add ${isDisabled ? 'disabled' : ''}`} disabled={isDisabled}>Add</button>
           <button className="add-todo-form-cancel" type="button" onClick={this.toggleForm}>Cancel</button>
-          
         </form>
       </div>
     )
