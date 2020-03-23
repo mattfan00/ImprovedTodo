@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import TodoItem from './TodoItem'
 import TodoForm from './TodoForm'
+import TodoItemEdit from './TodoItemEdit'
 import * as todoCalls from '../apiCalls/apiTodo'
 
 
@@ -14,6 +15,7 @@ class TodoList extends Component {
     }
 
     this.addTodo = this.addTodo.bind(this)
+    this.editTodo = this.editTodo.bind(this)
   }
 
   componentDidMount() {
@@ -22,6 +24,10 @@ class TodoList extends Component {
 
   async loadTodos() {
     let todos = await todoCalls.getTodosFromList(this.props.listId)
+    todos = todos.map(todo => {
+      todo.editing = false;
+      return todo
+    })
     this.setState({todos: todos})
   }
 
@@ -43,6 +49,29 @@ class TodoList extends Component {
     this.setState({todos: newTodos})
   }
 
+  toggleEditing(todoId) {
+    const newTodos = this.state.todos.map(todo => {
+      if(todo._id === todoId) {
+        return {...todo, editing: true}
+      } else {
+        return {...todo, editing: false}
+      }
+    })
+    this.setState({todos: newTodos})
+  }
+
+  async editTodo(todoId, val) {
+    await todoCalls.editTodo(todoId, val)
+    const newTodos = this.state.todos.map(todo => {
+      var newTodo = {...todo, editing: false}
+      if (todo._id === todoId) {
+        newTodo.name = val
+      }
+      return newTodo
+    })
+    this.setState({todos: newTodos})
+  }
+
   async removeTodo(todo) {
     let removedTodo = await todoCalls.removeTodo(todo)
     const newTodos = this.state.todos.filter(todo => todo._id !== removedTodo._id)
@@ -51,15 +80,29 @@ class TodoList extends Component {
   }
 
   render() {
-    const todoList = this.state.todos.map((todo) => 
-      <TodoItem 
-        key={todo._id}
-        name={todo.name}
-        completed={todo.completed}
-        removeTodo={this.removeTodo.bind(this, todo)}
-        toggleCompleted={this.toggleCompleted.bind(this, todo)} // this passes allows to call toggleCompleted and pass in todo
-      />
-    )
+    const todoList = this.state.todos.map((todo) => {
+      if (!todo.editing) {
+        return (
+          <TodoItem 
+            key={todo._id}
+            name={todo.name}
+            completed={todo.completed}
+            editing={todo.editing}
+            removeTodo={this.removeTodo.bind(this, todo)}
+            toggleCompleted={this.toggleCompleted.bind(this, todo)} // this passes allows to call toggleCompleted and pass in todo
+            toggleEditing={this.toggleEditing.bind(this, todo._id)}
+          />
+        )
+      } else {
+        return (
+          <TodoItemEdit
+            editTodo={this.editTodo}
+            currentVal={todo.name}
+            todoId={todo._id}
+         />
+        )
+      }
+    })
 
     return(
       <div>

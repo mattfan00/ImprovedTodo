@@ -33,7 +33,7 @@ class TodoForm extends Component {
 
   render() {
     const showForm = this.state.showForm
-    const isDisabled = this.state.value.length == 0 ? true : false
+    const isDisabled = this.state.value.length === 0 ? true : false
 
     return (
       <div className="add-todo">

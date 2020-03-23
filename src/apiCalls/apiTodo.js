@@ -22,6 +22,17 @@ export async function addTodo(val, listId) {
   .then((response) => response.json())
 }
 
+export async function editTodo(todoId, val) {
+  return fetch('http://localhost:3001/api/todos/' + todoId, {
+    method: 'put',
+    headers: new Headers({
+      'Content-Type': 'application/json'
+    }),
+    body: JSON.stringify({name: val})
+  })
+  .then((response) => response.json())
+} 
+
 export async function toggleCompleted(todo) {
   return fetch('http://localhost:3001/api/todos/' + todo._id, {
     method: 'put',
