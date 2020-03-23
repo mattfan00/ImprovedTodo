@@ -5,7 +5,7 @@ class TodoItemEdit extends Component {
     super(props)
     
     this.state = {
-      value: this.props.currentVal
+      value: this.props.currentVal  
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -23,9 +23,13 @@ class TodoItemEdit extends Component {
   }
 
   render() {
+    const isDisabled = this.state.value.length === 0 ? true : false
+
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form className="add-todo-form" onSubmit={this.handleSubmit}>
         <input value={this.state.value} onChange={this.handleChange}></input>
+        <button className={`add-todo-form-add ${isDisabled ? 'disabled' : ''}`} disabled={isDisabled}>Add</button>
+        <button className="add-todo-form-cancel" type="button" onClick={this.props.toggleEditing}>Cancel</button>
       </form>
     )
   }

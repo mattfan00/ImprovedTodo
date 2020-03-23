@@ -52,7 +52,7 @@ class TodoList extends Component {
   toggleEditing(todoId) {
     const newTodos = this.state.todos.map(todo => {
       if(todo._id === todoId) {
-        return {...todo, editing: true}
+        return {...todo, editing: !todo.editing}
       } else {
         return {...todo, editing: false}
       }
@@ -99,6 +99,7 @@ class TodoList extends Component {
             editTodo={this.editTodo}
             currentVal={todo.name}
             todoId={todo._id}
+            toggleEditing={this.toggleEditing.bind(this, todo._id)}
          />
         )
       }

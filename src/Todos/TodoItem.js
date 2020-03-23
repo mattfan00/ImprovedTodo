@@ -9,7 +9,6 @@ function TodoItem(props) {
         {props.name}
       </span>
       &nbsp; 
-      {props.editing ? 'editing' : ''}
       <span onClick={props.removeTodo}>
         X
       </span>
