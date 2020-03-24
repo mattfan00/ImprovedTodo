@@ -88,6 +88,7 @@ class TodoList extends Component {
             name={todo.name}
             completed={todo.completed}
             editing={todo.editing}
+            due={todo.due ? new Date(todo.due) : null}
             removeTodo={this.removeTodo.bind(this, todo)}
             toggleCompleted={this.toggleCompleted.bind(this, todo)} // this passes allows to call toggleCompleted and pass in todo
             toggleEditing={this.toggleEditing.bind(this, todo._id)}
