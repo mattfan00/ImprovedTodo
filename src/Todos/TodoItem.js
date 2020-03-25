@@ -5,7 +5,7 @@ class TodoItem extends Component {
     super(props)
 
     this.state = {
-      hover: false
+      hover: false,
     }
 
     this.toggleHover = this.toggleHover.bind(this)
@@ -33,17 +33,66 @@ class TodoItem extends Component {
   }
 }
 
-function HoverItems(props) {
-  return (
-    <span>
-      <span onClick={props.removeTodo}>
-          X
+
+class HoverItems extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      showMenu: false
+    }
+
+    this.showMenu = this.showMenu.bind(this)
+    this.closeMenu = this.closeMenu.bind(this)
+  }
+
+  showMenu(e) {
+    e.preventDefault()
+
+    this.setState({ showMenu: true }, () => {
+      document.addEventListener('click', this.closeMenu);
+    })
+  }
+
+  closeMenu(e) {
+    
+    if (!this.dropdownMenu.contains(e.target)) {
+      
+      this.setState({ showMenu: false }, () => {
+        document.removeEventListener('click', this.closeMenu);
+      });  
+    }
+  }
+  render() {
+    return (
+      <span>
+        <span onClick={this.props.removeTodo}>
+            X
+        </span>
+        &nbsp;
+        <i onClick={this.showMenu} class="far fa-calendar-plus"></i>
+        {
+          this.state.showMenu
+            ? (
+              <div 
+                ref={(element) => {
+                  this.dropdownMenu = element;
+                }}
+              >
+                <button>item 1</button>
+                <button>item 2</button>
+                <button>item 3</button>
+              </div>
+          )
+            : (
+              null
+          )
+        }
+        
       </span>
-      &nbsp;
-      <i class="far fa-calendar-plus"></i>
-    </span>
-   
-  )
+    )
+  }
+  
 }
 
 export default TodoItem
