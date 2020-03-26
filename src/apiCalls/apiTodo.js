@@ -22,7 +22,7 @@ export async function addTodo(val, listId) {
   .then((response) => response.json())
 }
 
-export async function editTodo(todoId, val) {
+export async function editTodoName(todoId, val) {
   return fetch('http://localhost:3001/api/todos/' + todoId, {
     method: 'put',
     headers: new Headers({

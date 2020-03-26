@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import AddList from './AddList'
 import ListHeader from './ListHeader'
 import DockedList from './DockedList'
+import ChangeListDisplays from './ChangeListDisplays'
 import * as listCalls from '../apiCalls/apiList'
 import * as todoCalls from '../apiCalls/apiTodo'
 import {getTodos, removeTodo} from '../apiCalls/apiTodo'
@@ -17,6 +18,8 @@ class Lists extends Component {
     this.addList = this.addList.bind(this)
     this.loadlists = this.loadLists.bind(this)
     this.updateNumTodos = this.updateNumTodos.bind(this)
+    this.hideEmptyLists = this.hideEmptyLists.bind(this)
+    this.displayAllLists = this.displayAllLists.bind(this)
   }
 
   componentDidMount() {
@@ -100,6 +103,41 @@ class Lists extends Component {
     this.setState({dock: newDock})
   }
 
+  async hideEmptyLists() {
+    var newDock = await Promise.all(this.state.dock.map(async list => {
+      if (list.numTodos === 0) {
+        let updatedList = await listCalls.changeAllDisplays(list._id, false)
+        updatedList.numTodos = 0
+        return updatedList
+      } else {
+        return list
+      }
+    }))
+    var newActiveLists = newDock.filter(list => list.display === true)
+    this.setState({
+      activeLists: newActiveLists,
+      dock: newDock
+    })
+  }
+
+  async displayAllLists() {
+    var newDock = await Promise.all(this.state.dock.map(async list => {
+      if (list.display === false) {
+        var numTodos = list.numTodos
+        let updatedList = await listCalls.changeAllDisplays(list._id, true)
+        updatedList.numTodos = numTodos
+        return updatedList
+      } else {
+        return list
+      }
+    }))
+    var newActiveLists = newDock.filter(list => list.display === true)
+    this.setState({
+      activeLists: newActiveLists,
+      dock: newDock
+    })
+  }
+
 
   render() {
     const activeLists = this.state.activeLists.map(list => 
@@ -128,7 +166,11 @@ class Lists extends Component {
       <div>
         <div className="dock">
           {dockedLists}
-          <AddList addList={this.addList} />  
+          <AddList addList={this.addList} /> 
+          <ChangeListDisplays
+            hideEmptyLists={this.hideEmptyLists}
+            displayAllLists={this.displayAllLists}
+          />
         </div>
         <div className="main">
           <div className="main-grid">

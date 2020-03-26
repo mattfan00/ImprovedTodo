@@ -15,7 +15,7 @@ class TodoList extends Component {
     }
 
     this.addTodo = this.addTodo.bind(this)
-    this.editTodo = this.editTodo.bind(this)
+    this.editTodo = this.editTodoName.bind(this)
   }
 
   componentDidMount() {
@@ -60,8 +60,8 @@ class TodoList extends Component {
     this.setState({todos: newTodos})
   }
 
-  async editTodo(todoId, val) {
-    await todoCalls.editTodo(todoId, val)
+  async editTodoName(todoId, val) {
+    await todoCalls.editTodoName(todoId, val)
     const newTodos = this.state.todos.map(todo => {
       var newTodo = {...todo, editing: false}
       if (todo._id === todoId) {

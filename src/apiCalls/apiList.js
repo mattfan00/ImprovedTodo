@@ -27,7 +27,6 @@ export async function deleteList(list) {
 }
 
 export async function updateDisplay(list) {
-  console.log('turning display to ' + !list.display.toString())
   return fetch('http://localhost:3001/api/lists/' + list._id, {
     method: 'put',
     headers: new Headers({
@@ -35,6 +34,19 @@ export async function updateDisplay(list) {
     }),
     body: JSON.stringify({
       display: !list.display
+    })
+  })
+  .then((response) => response.json())
+}
+
+export async function changeAllDisplays(listId, show) {
+  return fetch('http://localhost:3001/api/lists/' + listId, {
+    method: 'put',
+    headers: new Headers({
+      'Content-Type': 'application/json'
+    }),
+    body: JSON.stringify({
+      display: show
     })
   })
   .then((response) => response.json())
