@@ -16,6 +16,7 @@ class TodoList extends Component {
 
     this.addTodo = this.addTodo.bind(this)
     this.editTodo = this.editTodoName.bind(this)
+    this.changeDueDate = this.changeDueDate.bind(this)
   }
 
   componentDidMount() {
@@ -38,7 +39,7 @@ class TodoList extends Component {
   }
 
   async toggleCompleted(todo) {
-    let updatedTodo = await todoCalls.toggleCompleted(todo)
+    let updatedTodo = await todoCalls.updateTodo(todo._id, {completed: !todo.completed})
     const newTodos = this.state.todos.map(todo => {
       if(todo._id === updatedTodo._id) {
         return {...todo, completed: !todo.completed}
@@ -61,13 +62,25 @@ class TodoList extends Component {
   }
 
   async editTodoName(todoId, val) {
-    await todoCalls.editTodoName(todoId, val)
+    await todoCalls.updateTodo(todoId, {name: val})
     const newTodos = this.state.todos.map(todo => {
       var newTodo = {...todo, editing: false}
       if (todo._id === todoId) {
         newTodo.name = val
       }
       return newTodo
+    })
+    this.setState({todos: newTodos})
+  }
+
+  async changeDueDate(todoId, date) {
+    let updatedTodo = await todoCalls.updateTodo(todoId, {due: date})
+    const newTodos = this.state.todos.map(todo => {
+      if (todo._id === todoId) {
+        return updatedTodo
+      } else {
+        return todo
+      }
     })
     this.setState({todos: newTodos})
   }
@@ -85,6 +98,7 @@ class TodoList extends Component {
         return (
           <TodoItem 
             key={todo._id}
+            todoId={todo._id}
             name={todo.name}
             completed={todo.completed}
             editing={todo.editing}
@@ -92,6 +106,7 @@ class TodoList extends Component {
             removeTodo={this.removeTodo.bind(this, todo)}
             toggleCompleted={this.toggleCompleted.bind(this, todo)} // this passes allows to call toggleCompleted and pass in todo
             toggleEditing={this.toggleEditing.bind(this, todo._id)}
+            changeDueDate={this.changeDueDate}
           />
         )
       } else {

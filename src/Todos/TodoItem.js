@@ -12,6 +12,7 @@ class TodoItem extends Component {
 
     this.showMenu = this.showMenu.bind(this)
     this.closeMenu = this.closeMenu.bind(this)
+    this.closeMenuAfterSubmit = this.closeMenuAfterSubmit.bind(this)
   }
 
   toggleHover(enter) {
@@ -25,17 +26,25 @@ class TodoItem extends Component {
   showMenu(e) {
     e.preventDefault()
 
+    console.log('arrives at show')
     this.setState({ showMenu: true }, () => {
       document.addEventListener('click', this.closeMenu);
     })
   }
 
   closeMenu(e) {
-    if (!this.dropdownMenu.contains(e.target)) {
-      this.setState({ showMenu: false }, () => {
-        document.removeEventListener('click', this.closeMenu);
-      });  
+    if (this.state.showMenu) {
+      if (!this.dropdownMenu.contains(e.target)) {
+        this.setState({ showMenu: false }, () => {
+          document.removeEventListener('click', this.closeMenu);
+        });  
+      }
     }
+  }
+
+  closeMenuAfterSubmit() {
+    document.removeEventListener('click', this.closeMenu);
+    this.setState({showMenu: false})
   }
   
   render() {
@@ -69,7 +78,11 @@ class TodoItem extends Component {
                           this.dropdownMenu = element;
                         }}
                       >
-                        <Calendar />
+                        <Calendar 
+                          todoId={this.props.todoId}  
+                          changeDueDate={this.props.changeDueDate}
+                          closeMenu={this.closeMenuAfterSubmit}
+                        />
                       </div>
                   )
                     : (

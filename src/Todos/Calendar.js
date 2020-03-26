@@ -29,6 +29,13 @@ class Calendar extends Component {
     return this.state.dateObject.format("D")
   }
 
+  getDateSelected(day) {
+    var dateObject = this.state.dateObject
+    var dateFormat = new Date(dateObject.format('YYYY'), dateObject.format('M') - 1, day)
+    this.props.changeDueDate(this.props.todoId, dateFormat)
+    this.props.closeMenu()
+  }
+
   render() {
     const weekdayname = moment.weekdaysShort().map((day, i) => (
       <div key={i}>{day}</div>
@@ -37,19 +44,22 @@ class Calendar extends Component {
     var blanks = []
     for (var i = 0; i < this.firstDayOfMonth(); i++) {
       blanks.push(
-        <button></button>
+        <button key={i + 1}></button>
       )
     }
 
     var daysInMonth = []
     for (var d = 1; d <= this.daysInMonth(); d++) {
       daysInMonth.push(
-        <button className={this.currentDay() == d ? 'currentDay' : ''}>{d}</button>
+        <button key={d+this.firstDayOfMonth()} onClick={this.getDateSelected.bind(this, d)} className={this.currentDay() == d ? 'currentDay' : ''}>{d}</button>
       )
     }
 
     return (
       <div className="add-todo-calendar">
+        <div className="month-indicator">
+          {this.state.dateObject.format('MMM')} {this.state.dateObject.format('YYYY')}
+        </div>
         <div className="day-of-week">
           {weekdayname}
         </div>

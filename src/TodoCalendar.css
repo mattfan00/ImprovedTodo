@@ -9,6 +9,12 @@
   padding: 5px;
 }
 
+.month-indicator {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 1em;
+}
+
 .day-of-week,
 .date-grid {
   display: grid;
@@ -25,10 +31,16 @@
   position: relative;
   border: 0;
   height: 4.5ch;
+  width: 4.5ch;
+  margin: 0 auto;
   border-radius: 50%;
-  background-color: transparent;
+  /* background-color: transparent; */
+  cursor: pointer;
 }
 
+.date-grid button:focus {outline: 0}
+
 .currentDay {
-  color: pink;
+  background-color: red;
+  color: white;
 }
