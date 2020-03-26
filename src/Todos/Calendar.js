@@ -7,10 +7,15 @@ class Calendar extends Component {
     super(props)
 
     this.state = {
-      dateObject: moment()
+      dateObject: moment(),
+      today: moment()
     }
 
-    
+    // this.checkIfSelectedDay = this.checkIfSelectedDay.bind(this)
+    this.monthUp = this.monthUp.bind(this)
+    this.monthDown = this.monthDown.bind(this)
+    this.checkIfCurrentDay = this.checkIfCurrentDay.bind(this)
+    this.checkIfSelectedDay = this.checkIfSelectedDay.bind(this)
   }
 
   firstDayOfMonth() {
@@ -26,14 +31,50 @@ class Calendar extends Component {
   }
 
   currentDay() {
-    return this.state.dateObject.format("D")
+    return this.state.today.format("D")
   }
 
-  getDateSelected(day) {
+  chooseDate(day) {
     var dateObject = this.state.dateObject
     var dateFormat = new Date(dateObject.format('YYYY'), dateObject.format('M') - 1, day)
     this.props.changeDueDate(this.props.todoId, dateFormat)
     this.props.closeMenu()
+  }
+  
+  monthUp() {
+    var dateObject = moment({...this.state.dateObject})
+    var newDateObject = dateObject.set({
+      'month': (dateObject.month() + 1) % 12
+    })
+    this.setState({
+      dateObject: newDateObject
+    })
+  }
+
+  monthDown() {
+    var dateObject = moment({...this.state.dateObject})
+    var newDateObject = dateObject.set({
+      'month': (dateObject.month() - 1) % 12
+    })
+    this.setState({
+      dateObject: newDateObject
+    })
+  }
+
+  checkIfCurrentDay(day) {
+    const dateObject = this.state.dateObject
+    const today = this.state.today
+    if (this.currentDay() == day && dateObject.month() == today.month() && dateObject.year() == today.year()) {
+      return true
+    } else return false
+  }
+
+  checkIfSelectedDay(day) {
+    const dateObject = this.state.dateObject
+    const due = moment(this.props.due)
+    if (due.format('D') == day && dateObject.month() == due.month() && dateObject.year() == due.year()) {
+      return true
+    } else return false
   }
 
   render() {
@@ -51,14 +92,21 @@ class Calendar extends Component {
     var daysInMonth = []
     for (var d = 1; d <= this.daysInMonth(); d++) {
       daysInMonth.push(
-        <button key={d+this.firstDayOfMonth()} onClick={this.getDateSelected.bind(this, d)} className={this.currentDay() == d ? 'currentDay' : ''}>{d}</button>
+        <button key={d+this.firstDayOfMonth()} 
+          onClick={this.chooseDate.bind(this, d)} 
+          className={`${this.checkIfCurrentDay(d) ? 'currentDay' : ''}  ${this.checkIfSelectedDay(d) ? 'selectedDay' : ''}`}
+        >
+          {d}
+        </button>
       )
     }
 
     return (
       <div className="add-todo-calendar">
         <div className="month-indicator">
+          <button onClick={this.monthDown}><i class="fas fa-arrow-left"></i></button>
           {this.state.dateObject.format('MMM')} {this.state.dateObject.format('YYYY')}
+          <button onClick={this.monthUp}><i class="fas fa-arrow-right"></i></button>
         </div>
         <div className="day-of-week">
           {weekdayname}

@@ -10,9 +10,17 @@
 }
 
 .month-indicator {
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
   font-weight: 700;
+  margin-top: .5em;
   margin-bottom: 1em;
+  padding: 0 30px;
+}
+
+.month-indicator>button {
+  border: 0;
+  cursor: pointer;
 }
 
 .day-of-week,
@@ -23,24 +31,32 @@
 
 .day-of-week>div {
   font-size: 0.7em;
-  font-weight: 700;
+  font-weight: 500;
   text-align: center;
 }
 
 .date-grid button {
   position: relative;
   border: 0;
+  border-radius: 10%;
   height: 4.5ch;
   width: 4.5ch;
   margin: 0 auto;
-  border-radius: 50%;
-  /* background-color: transparent; */
   cursor: pointer;
+  font-weight: 700;
+}
+
+.date-grid button:hover {
+  background-color: #e0e0e0;
 }
 
 .date-grid button:focus {outline: 0}
 
 .currentDay {
-  background-color: red;
+  color: orange; 
+}
+
+.selectedDay {
+  background-color: orange;
   color: white;
 }

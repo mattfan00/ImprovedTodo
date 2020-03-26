@@ -82,6 +82,7 @@ class TodoItem extends Component {
                           todoId={this.props.todoId}  
                           changeDueDate={this.props.changeDueDate}
                           closeMenu={this.closeMenuAfterSubmit}
+                          due={this.props.due}
                         />
                       </div>
                   )
