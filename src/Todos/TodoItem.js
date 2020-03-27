@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Calendar from './Calendar'
+import moment from 'moment'
 
 class TodoItem extends Component {
   constructor(props) {
@@ -7,7 +8,7 @@ class TodoItem extends Component {
 
     this.state = {
       hover: false,
-      showMenu: false
+      showMenu: false,
     }
 
     this.showMenu = this.showMenu.bind(this)
@@ -51,6 +52,8 @@ class TodoItem extends Component {
     const isCompleted = this.props.completed 
     const hover = this.state.hover
     const showMenu = this.state.showMenu
+    const due = this.props.due
+    const today = moment().startOf('day')
 
     return (
       <div className="todo-item" onMouseEnter={this.toggleHover.bind(this, true)} onMouseLeave={this.toggleHover.bind(this,false)}>
@@ -58,7 +61,21 @@ class TodoItem extends Component {
           {this.props.name}
         </span>
         &nbsp; 
-        {this.props.due ? this.props.due.toLocaleDateString() : ''}
+        {due ? (
+          moment(due).diff(today, "days") <= 7 ? (
+            moment(due).calendar(null, {
+              sameDay: '[Today]',
+              nextDay: '[Tomorrow]',
+              nextWeek: 'dddd',
+              lastDay: '[Yesterday]',
+              lastWeek: '[Last] dddd',
+              sameElse: 'DD/MM/YYYY'
+            })
+          ) : (
+            moment(due).format("MMM D") 
+          )
+        ) : ''
+        }
         &nbsp;
         {/* {hover ? <HoverItems /> : ''} */}
         {

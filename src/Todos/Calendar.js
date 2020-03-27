@@ -104,9 +104,9 @@ class Calendar extends Component {
     return (
       <div className="add-todo-calendar">
         <div className="month-indicator">
-          <button onClick={this.monthDown}><i class="fas fa-arrow-left"></i></button>
+          <button onClick={this.monthDown}><i className="fas fa-arrow-left"></i></button>
           {this.state.dateObject.format('MMM')} {this.state.dateObject.format('YYYY')}
-          <button onClick={this.monthUp}><i class="fas fa-arrow-right"></i></button>
+          <button onClick={this.monthUp}><i className="fas fa-arrow-right"></i></button>
         </div>
         <div className="day-of-week">
           {weekdayname}
