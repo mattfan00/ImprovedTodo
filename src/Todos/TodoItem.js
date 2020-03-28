@@ -7,7 +7,8 @@ class TodoItem extends Component {
     super(props)
 
     this.state = {
-      hover: false,
+      hoverItem: false,
+      hoverCheck: false,
       showMenu: false,
     }
 
@@ -16,12 +17,16 @@ class TodoItem extends Component {
     this.closeMenuAfterSubmit = this.closeMenuAfterSubmit.bind(this)
   }
 
-  toggleHover(enter) {
+  toggleHoverItem(enter) {
     if (enter || this.state.showMenu) {
-      this.setState({hover: true})
+      this.setState({hoverItem: true})
     } else {
-      this.setState({hover: false})
+      this.setState({hoverItem: false})
     }
+  }
+
+  toggleHoverCheck(enter) {
+    this.setState({hoverCheck: enter})
   }
 
   showMenu(e) {
@@ -49,18 +54,30 @@ class TodoItem extends Component {
   }
   
   render() {
-    const isCompleted = this.props.completed 
-    const hover = this.state.hover
+    const hoverItem = this.state.hoverItem
+    const hoverCheck = this.state.hoverCheck
     const showMenu = this.state.showMenu
+    const isCompleted = this.props.completed 
     const due = this.props.due
     const today = moment().startOf('day')
 
     return (
-      <div className="todo-item" onMouseEnter={this.toggleHover.bind(this, true)} onMouseLeave={this.toggleHover.bind(this,false)}>
-        <span onClick={!showMenu ? this.props.toggleEditing : null} style={{textDecoration: isCompleted ? 'line-through' : 'none'}}>
-          {this.props.name}
+      <div 
+        className="todo-item" 
+        onMouseEnter={this.toggleHoverItem.bind(this, true)} 
+        onMouseLeave={this.toggleHoverItem.bind(this,false)}
+      >
+        <span 
+          onClick={this.props.removeTodo} 
+          onMouseEnter={this.toggleHoverCheck.bind(this, true)} 
+          onMouseLeave={this.toggleHoverCheck.bind(this,false)}
+        >
+          {hoverCheck ? <i class="fas fa-check-circle"></i> : <i class="far fa-circle"></i>}
         </span>
-        &nbsp; 
+        &nbsp;&nbsp;
+        <span onClick={!showMenu ? this.props.toggleEditing : null}>
+          {this.props.name}
+        </span> 
         {due ? (
           moment(due).diff(today, "days") <= 7 ? (
             moment(due).calendar(null, {
@@ -77,16 +94,11 @@ class TodoItem extends Component {
         ) : ''
         }
         &nbsp;
-        {/* {hover ? <HoverItems /> : ''} */}
         {
-          hover 
+          hoverItem 
             ? (
               <span>
-                <span onClick={this.props.removeTodo}>
-                    X
-                </span>
-                &nbsp;
-                <i onClick={this.showMenu} className="far fa-calendar-plus"></i>
+                <i onClick={this.showMenu} className="fas fa-ellipsis-h"></i>
                 {
                   showMenu
                     ? (
