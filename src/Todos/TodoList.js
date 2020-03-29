@@ -122,7 +122,7 @@ class TodoList extends Component {
     })
 
     return(
-      <div>
+      <div className="main-grid-item-todos">
         {todoList}
         <TodoForm addTodo={this.addTodo} />
       </div>

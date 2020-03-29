@@ -4,10 +4,10 @@ import TodoList from '../Todos/TodoList'
 function ListHeader(props) {
   return (
     <div className="main-grid-item">
-      <h3>
+      <h2 className="main-grid-item-header">
         <span onClick={props.changeListDisplay}>{props.name}</span> &nbsp;
         <span onClick={props.deleteList}>X</span>
-      </h3> 
+      </h2> 
       <TodoList 
         listId={props.listId}
         updateNumTodos={props.updateNumTodos}

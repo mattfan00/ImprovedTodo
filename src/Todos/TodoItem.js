@@ -74,25 +74,29 @@ class TodoItem extends Component {
         >
           {hoverCheck ? <i class="fas fa-check-circle"></i> : <i class="far fa-circle"></i>}
         </span>
-        &nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;
         <span onClick={!showMenu ? this.props.toggleEditing : null}>
           {this.props.name}
         </span> 
-        {due ? (
-          moment(due).diff(today, "days") <= 7 ? (
-            moment(due).calendar(null, {
-              sameDay: '[Today]',
-              nextDay: '[Tomorrow]',
-              nextWeek: 'dddd',
-              lastDay: '[Yesterday]',
-              lastWeek: '[Last] dddd',
-              sameElse: 'DD/MM/YYYY'
-            })
-          ) : (
-            moment(due).format("MMM D") 
-          )
-        ) : ''
-        }
+        &nbsp;&nbsp;
+        <span className="todo-item-date">
+          {due ? (
+            moment(due).diff(today, "days") <= 7 ? (
+              moment(due).calendar(null, {
+                sameDay: '[Today]',
+                nextDay: '[Tomorrow]',
+                nextWeek: 'dddd',
+                lastDay: '[Yesterday]',
+                lastWeek: '[Last] dddd',
+                sameElse: 'DD/MM/YYYY'
+              })
+            ) : (
+              moment(due).format("MMM D") 
+            )
+          ) : ''
+          }
+        </span>
+        
         &nbsp;
         {
           hoverItem 
