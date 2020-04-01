@@ -85,6 +85,18 @@ class TodoList extends Component {
     this.setState({todos: newTodos})
   }
 
+  async removeDueDate(todoId) {
+    let updatedTodo = await todoCalls.updateTodo(todoId, {due: null})
+    const newTodos = this.state.todos.map(todo => {
+      if (todo._id === todoId) {
+        return updatedTodo
+      } else {
+        return todo
+      }
+    })
+    this.setState({todos: newTodos})
+  }
+
   async removeTodo(todo) {
     let removedTodo = await todoCalls.removeTodo(todo)
     const newTodos = this.state.todos.filter(todo => todo._id !== removedTodo._id)
@@ -106,6 +118,7 @@ class TodoList extends Component {
             removeTodo={this.removeTodo.bind(this, todo)}
             toggleCompleted={this.toggleCompleted.bind(this, todo)} // this passes allows to call toggleCompleted and pass in todo
             toggleEditing={this.toggleEditing.bind(this, todo._id)}
+            removeDueDate={this.removeDueDate.bind(this, todo._id)}
             changeDueDate={this.changeDueDate}
           />
         )

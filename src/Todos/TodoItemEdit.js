@@ -28,7 +28,7 @@ class TodoItemEdit extends Component {
     return (
       <form className="add-todo-form" onSubmit={this.handleSubmit}>
         <input value={this.state.value} onChange={this.handleChange}></input>
-        <button className={`add-todo-form-add ${isDisabled ? 'disabled' : ''}`} disabled={isDisabled}>Add</button>
+        {/* <button className={`add-todo-form-add ${isDisabled ? 'disabled' : ''}`} disabled={isDisabled}>Add</button> */}
         <button className="add-todo-form-cancel" type="button" onClick={this.props.toggleEditing}>Cancel</button>
       </form>
     )

@@ -15,6 +15,7 @@ class TodoItem extends Component {
     this.showMenu = this.showMenu.bind(this)
     this.closeMenu = this.closeMenu.bind(this)
     this.closeMenuAfterSubmit = this.closeMenuAfterSubmit.bind(this)
+    this.removeDueDateAndCloseMenu = this.removeDueDateAndCloseMenu.bind(this)
   }
 
   toggleHoverItem(enter) {
@@ -49,6 +50,14 @@ class TodoItem extends Component {
         });  
       }
     }
+  }
+
+  removeDueDateAndCloseMenu() {
+    this.props.removeDueDate();
+    this.setState({
+      showMenu: false,
+      hoverItem: false
+    })
   }
 
   closeMenuAfterSubmit() {
@@ -107,7 +116,7 @@ class TodoItem extends Component {
         
         &nbsp;
         <span className={hoverItem ? '' : 'not-visible'}>
-          <i onClick={this.showMenu} className="far fa-calendar"></i>
+          <i onClick={this.showMenu} className="far fa-calendar hover-background"></i>
           {
             showMenu
               ? (
@@ -118,9 +127,10 @@ class TodoItem extends Component {
                 >
                   <Calendar 
                     todoId={this.props.todoId}  
-                    changeDueDate={this.props.changeDueDate}
-                    closeMenu={this.closeMenuAfterSubmit}
                     due={this.props.due}
+                    changeDueDate={this.props.changeDueDate}
+                    removeDueDate={this.removeDueDateAndCloseMenu}
+                    closeMenu={this.closeMenuAfterSubmit}
                   />
                 </div>
             )

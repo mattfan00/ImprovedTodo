@@ -98,7 +98,7 @@ class Calendar extends Component {
       daysInMonth.push(
         <button key={d+this.firstDayOfMonth()} 
           onClick={this.chooseDate.bind(this, d)} 
-          className={`${this.checkIfCurrentDay(d) ? 'currentDay' : ''}  ${this.checkIfSelectedDay(d) ? 'selectedDay' : ''}`}
+          className={`hover-background ${this.checkIfCurrentDay(d) ? 'currentDay' : ''}  ${this.checkIfSelectedDay(d) ? 'selectedDay' : ''}`}
         >
           {d}
         </button>
@@ -108,9 +108,9 @@ class Calendar extends Component {
     return (
       <div className="add-todo-calendar">
         <div className="month-indicator">
-          <button onClick={this.monthDown}><i className="fas fa-arrow-left"></i></button>
+          <button onClick={this.monthDown} className="hover-background"><i className="fas fa-arrow-left"></i></button>
           {this.state.dateObject.format('MMM')} {this.state.dateObject.format('YYYY')}
-          <button onClick={this.monthUp}><i className="fas fa-arrow-right"></i></button>
+          <button onClick={this.monthUp} className="hover-background"><i className="fas fa-arrow-right"></i></button>
         </div>
         <div className="day-of-week">
           {weekdayname}
@@ -119,6 +119,9 @@ class Calendar extends Component {
           {blanks}
           {daysInMonth}
         </div>
+        <span onClick={this.props.removeDueDate} className={`remove-date ${this.props.due ? '' : 'hide'}`}>
+          Remove due date
+        </span>
       </div>
     )
   }
