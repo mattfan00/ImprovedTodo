@@ -41,7 +41,10 @@ class TodoItem extends Component {
   closeMenu(e) {
     if (this.state.showMenu) {
       if (!this.dropdownMenu.contains(e.target)) {
-        this.setState({ showMenu: false }, () => {
+        this.setState({ 
+          showMenu: false,
+          hoverItem: false
+        }, () => {
           document.removeEventListener('click', this.closeMenu);
         });  
       }
@@ -50,7 +53,10 @@ class TodoItem extends Component {
 
   closeMenuAfterSubmit() {
     document.removeEventListener('click', this.closeMenu);
-    this.setState({showMenu: false})
+    this.setState({
+      showMenu: false,
+      hoverItem: false
+    })
   }
   
   render() {
@@ -67,68 +73,62 @@ class TodoItem extends Component {
         onMouseEnter={this.toggleHoverItem.bind(this, true)} 
         onMouseLeave={this.toggleHoverItem.bind(this,false)}
       >
-        <span 
-          onClick={this.props.removeTodo} 
-          onMouseEnter={this.toggleHoverCheck.bind(this, true)} 
-          onMouseLeave={this.toggleHoverCheck.bind(this,false)}
-        >
-          {hoverCheck ? <i class="fas fa-check-circle"></i> : <i class="far fa-circle"></i>}
-        </span>
-        &nbsp;&nbsp;&nbsp;
-        <span onClick={!showMenu ? this.props.toggleEditing : null}>
-          {this.props.name}
-        </span> 
-        &nbsp;&nbsp;
-        <span className="todo-item-date">
-          {due ? (
-            moment(due).diff(today, "days") <= 7 ? (
-              moment(due).calendar(null, {
-                sameDay: '[Today]',
-                nextDay: '[Tomorrow]',
-                nextWeek: 'dddd',
-                lastDay: '[Yesterday]',
-                lastWeek: '[Last] dddd',
-                sameElse: 'DD/MM/YYYY'
-              })
-            ) : (
-              moment(due).format("MMM D") 
-            )
-          ) : ''
-          }
-        </span>
+        <div>
+          <span 
+            onClick={this.props.removeTodo} 
+            onMouseEnter={this.toggleHoverCheck.bind(this, true)} 
+            onMouseLeave={this.toggleHoverCheck.bind(this,false)}
+          >
+            {hoverCheck ? <i class="fas fa-check-circle"></i> : <i className="far fa-circle"></i>}
+          </span>
+          &nbsp;&nbsp;&nbsp;
+          <span onClick={!showMenu ? this.props.toggleEditing : null}>
+            {this.props.name}
+          </span> 
+          &nbsp;&nbsp;
+          <span className="todo-item-date">
+            {due ? (
+              moment(due).diff(today, "days") <= 7 ? (
+                moment(due).calendar(null, {
+                  sameDay: '[Today]',
+                  nextDay: '[Tomorrow]',
+                  nextWeek: 'dddd',
+                  lastDay: '[Yesterday]',
+                  lastWeek: '[Last] dddd',
+                  sameElse: 'DD/MM/YYYY'
+                })
+              ) : (
+                moment(due).format("MMM D") 
+              )
+            ) : ''
+            }
+          </span>
+        </div>
         
         &nbsp;
-        {
-          hoverItem 
-            ? (
-              <span>
-                <i onClick={this.showMenu} className="fas fa-ellipsis-h"></i>
-                {
-                  showMenu
-                    ? (
-                      <div 
-                        ref={(element) => {
-                          this.dropdownMenu = element;
-                        }}
-                      >
-                        <Calendar 
-                          todoId={this.props.todoId}  
-                          changeDueDate={this.props.changeDueDate}
-                          closeMenu={this.closeMenuAfterSubmit}
-                          due={this.props.due}
-                        />
-                      </div>
-                  )
-                    : (
-                      null
-                  )
-                } 
-              </span>
+        <span className={hoverItem ? '' : 'not-visible'}>
+          <i onClick={this.showMenu} className="far fa-calendar"></i>
+          {
+            showMenu
+              ? (
+                <div 
+                  ref={(element) => {
+                    this.dropdownMenu = element;
+                  }}
+                >
+                  <Calendar 
+                    todoId={this.props.todoId}  
+                    changeDueDate={this.props.changeDueDate}
+                    closeMenu={this.closeMenuAfterSubmit}
+                    due={this.props.due}
+                  />
+                </div>
             )
-            : (
-              null
+              : (
+                null
             )
-        }
+          } 
+        </span>
       </div>
     )
   }

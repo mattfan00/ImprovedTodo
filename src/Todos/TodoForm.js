@@ -43,7 +43,7 @@ class TodoForm extends Component {
         </div>
         <form className={`add-todo-form ${showForm ? '' : 'hide'}`} onSubmit={this.handleSubmit}>
           <input placeholder="Add Todo" type="text" value={this.state.value} onChange={this.handleChange}></input>
-          <button className={`add-todo-form-add ${isDisabled ? 'disabled' : ''}`} disabled={isDisabled}>Add</button>
+          {/* <button className={`add-todo-form-add ${isDisabled ? 'disabled' : ''}`} disabled={isDisabled}>Add</button> */}
           <button className="add-todo-form-cancel" type="button" onClick={this.toggleForm}>Cancel</button>
         </form>
       </div>

@@ -18,6 +18,10 @@ class Calendar extends Component {
     this.checkIfSelectedDay = this.checkIfSelectedDay.bind(this)
   }
 
+  componentDidMount() {
+    this.setState({dateObject: this.props.due ? moment(this.props.due) : moment()})
+  }
+
   firstDayOfMonth() {
     let dateObject = this.state.dateObject;
     let firstDay = moment(dateObject).startOf("month").format("d"); 
