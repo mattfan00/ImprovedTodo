@@ -16,6 +16,7 @@ class Calendar extends Component {
     this.monthDown = this.monthDown.bind(this)
     this.checkIfCurrentDay = this.checkIfCurrentDay.bind(this)
     this.checkIfSelectedDay = this.checkIfSelectedDay.bind(this)
+    this.checkIfDisabledDay = this.checkIfDisabledDay.bind(this)
   }
 
   componentDidMount() {
@@ -48,7 +49,7 @@ class Calendar extends Component {
   monthUp() {
     var dateObject = moment({...this.state.dateObject})
     var newDateObject = dateObject.set({
-      'month': (dateObject.month() + 1) % 12
+      'month': dateObject.month() + 1,
     })
     this.setState({
       dateObject: newDateObject
@@ -58,7 +59,7 @@ class Calendar extends Component {
   monthDown() {
     var dateObject = moment({...this.state.dateObject})
     var newDateObject = dateObject.set({
-      'month': (dateObject.month() - 1) % 12
+      'month': dateObject.month() - 1,
     })
     this.setState({
       dateObject: newDateObject
@@ -81,6 +82,19 @@ class Calendar extends Component {
     } else return false
   }
 
+  checkIfDisabledDay(day) {
+    const dateObject = this.state.dateObject
+    const today = this.state.today
+    if (dateObject.year() > today.year() ||
+        (dateObject.year() == today.year() && dateObject.month() > today.month()) || 
+        (dateObject.year() == today.year() && dateObject.month() == today.month() && day >= this.currentDay()))
+    {
+      return false
+    } else {
+      return true
+    }
+  }
+
   render() {
     const weekdayname = moment.weekdaysShort().map((day, i) => (
       <div key={i}>{day}</div>
@@ -89,16 +103,21 @@ class Calendar extends Component {
     var blanks = []
     for (var i = 0; i < this.firstDayOfMonth(); i++) {
       blanks.push(
-        <button key={i + 1}></button>
+        <button className="noHover" key={i + 1}></button>
       )
     }
 
     var daysInMonth = []
     for (var d = 1; d <= this.daysInMonth(); d++) {
       daysInMonth.push(
-        <button key={d+this.firstDayOfMonth()} 
+        <button
+          key={d+this.firstDayOfMonth()} 
           onClick={this.chooseDate.bind(this, d)} 
-          className={`hover-background ${this.checkIfCurrentDay(d) ? 'currentDay' : ''}  ${this.checkIfSelectedDay(d) ? 'selectedDay' : ''}`}
+          className={`hover-background 
+            ${this.checkIfCurrentDay(d) ? 'currentDay' : ''}  
+            ${this.checkIfSelectedDay(d) ? 'selectedDay' : ''} 
+            ${this.checkIfDisabledDay(d) ? 'disabledDay noHover' : ''}
+          `}
         >
           {d}
         </button>

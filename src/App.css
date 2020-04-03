@@ -33,6 +33,10 @@ body {
   visibility: hidden !important;
 }
 
+.hover-background {
+  transition-duration: .15s;
+}
+
 .hover-background:hover {
   background-color: var(--dock-hover-color);
 }
@@ -295,6 +299,14 @@ body {
 }
 
 .date-grid button:focus {outline: 0}
+
+.disabledDay {
+  color: #464646 !important;
+}
+
+.noHover {
+  pointer-events: none;
+}
 
 .currentDay {
   color: var(--calendar-selected-background-color) !important; 

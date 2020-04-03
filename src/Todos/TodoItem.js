@@ -32,8 +32,6 @@ class TodoItem extends Component {
 
   showMenu(e) {
     e.preventDefault()
-
-    console.log('arrives at show')
     this.setState({ showMenu: true }, () => {
       document.addEventListener('click', this.closeMenu);
     })
