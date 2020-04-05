@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import '../TodoCalendar.css'
 import moment from 'moment'
 
 class Calendar extends Component {

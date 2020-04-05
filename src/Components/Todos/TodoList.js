@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import TodoItem from './TodoItem'
 import TodoForm from './TodoForm'
 import TodoItemEdit from './TodoItemEdit'
-import * as todoCalls from '../apiCalls/apiTodo'
+import * as todoCalls from '../../apiCalls/apiTodo'
 
 
 class TodoList extends Component {

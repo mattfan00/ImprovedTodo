@@ -3,9 +3,8 @@ import AddList from './AddList'
 import ListHeader from './ListHeader'
 import DockedList from './DockedList'
 import ChangeListDisplays from './ChangeListDisplays'
-import * as listCalls from '../apiCalls/apiList'
-import * as todoCalls from '../apiCalls/apiTodo'
-import {getTodos, removeTodo} from '../apiCalls/apiTodo'
+import * as listCalls from '../../apiCalls/apiList'
+import * as todoCalls from '../../apiCalls/apiTodo'
 
 class Lists extends Component {
   constructor(props) {
@@ -55,10 +54,10 @@ class Lists extends Component {
     const newDock = this.state.dock.filter(list => list._id !== deletedList._id)
 
     // delete the todos associated with the list 
-    let todos = await getTodos()
+    let todos = await todoCalls.getTodos()
     todos.forEach(async todo => {
       if (deletedList._id === todo.listId) {
-        await removeTodo(todo)
+        await todoCalls.removeTodo(todo)
       }
     });
     this.setState({
