@@ -1,10 +1,10 @@
 export async function getLists() {
-  return fetch('http://localhost:3001/api/lists/')
+  return fetch('http://localhost:3002/api/lists/')
   .then((response) => response.json())
 }
 
 export async function addList(val) {
-  return fetch('http://localhost:3001/api/lists/', {
+  return fetch('http://localhost:3002/api/lists/', {
     method: 'post',
     headers: new Headers({
       'Content-Type': 'application/json'
@@ -17,7 +17,7 @@ export async function addList(val) {
 }
 
 export async function deleteList(list) {
-  return fetch('http://localhost:3001/api/lists/' + list._id, {
+  return fetch('http://localhost:3002/api/lists/' + list._id, {
     method: 'delete',
     headers: new Headers({
       'Content-Type': 'application/json'
@@ -27,7 +27,7 @@ export async function deleteList(list) {
 }
 
 export async function updateDisplay(list) {
-  return fetch('http://localhost:3001/api/lists/' + list._id, {
+  return fetch('http://localhost:3002/api/lists/' + list._id, {
     method: 'put',
     headers: new Headers({
       'Content-Type': 'application/json'
@@ -40,7 +40,7 @@ export async function updateDisplay(list) {
 }
 
 export async function changeAllDisplays(listId, show) {
-  return fetch('http://localhost:3001/api/lists/' + listId, {
+  return fetch('http://localhost:3002/api/lists/' + listId, {
     method: 'put',
     headers: new Headers({
       'Content-Type': 'application/json'

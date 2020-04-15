@@ -43,6 +43,7 @@ class Lists extends Component {
 
   async addList(val) {
     let newList = await listCalls.addList(val)
+    newList.numTodos = 0
     this.setState({
       activeLists: [...this.state.activeLists, newList],
       dock: [...this.state.dock, newList]
