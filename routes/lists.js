@@ -7,42 +7,49 @@ var express = require("express")
 // =============== STANDARD ROUTES =============================
 
 // get all lists
-router.get("/api/lists", (req, res) => {
+router.get("/", (req, res) => {
   List.find({}, (err, lists) => {
     res.json(lists)
   })
 })
 
 // get individual list
-router.get("/api/lists/:listId", (req, res) => {
+router.get("/:listId", (req, res) => {
   List.findById(req.params.listId, (err, foundList) => {
     res.json(foundList)
   })
 })
 
+// get todos from list
+router.get("/:listId/todos", (req, res) => {
+  Todo.find({listId: req.params.listId}, (err, todos) => {
+    res.json(todos)
+  })
+})
+
 // create new list 
-router.post("/api/lists", (req, res) => {
+router.post("/", (req, res) => {
   List.create(req.body, (err, newList) => {
     res.json(newList)
   })
 })
 
 // update list
-router.put("/api/lists/:listId", (req, res) => {
+router.put("/:listId", (req, res) => {
   List.findByIdAndUpdate(req.params.listId, req.body, {new: true}, (err, updatedList) => {
     res.json(updatedList)
   })
 })
 
 // delete all 
-router.delete("/api/lists", (req, res) => {
+router.delete("/", (req, res) => {
   List.remove({}, (err) => {
     res.send("removed all")
   })
 })
 
 // delete list
-router.delete("/api/lists/:listId", (req, res) => {
+router.delete("/:listId", (req, res) => {
   List.findByIdAndRemove(req.params.listId, (err, deletedList) => {
     res.json(deletedList)
   })

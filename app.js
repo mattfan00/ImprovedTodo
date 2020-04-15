@@ -5,8 +5,11 @@ var express = require('express')
     bodyParser = require("body-parser")
     mongoose = require("mongoose")
     config = require("config")
-    todoRoutes = require("./routes/todos")
+
+
+var todoRoutes = require("./routes/todos")
     listRoutes = require("./routes/lists")
+    userRoutes = require("./routes/users")
 
 app.use(cors())
 
@@ -23,8 +26,9 @@ mongoose.connect(db, {
 });
 
 
-app.use(todoRoutes)
-app.use(listRoutes)
+app.use("/api/todos", todoRoutes)
+app.use("/api/lists", listRoutes)
+app.use("/api/users", userRoutes)
 
 app.listen(port, () => {
   console.log("Setting up improved_todo server")

@@ -10,21 +10,15 @@ router.get("/api/todos", (req, res) => {
   })
 })
 
-router.get("/api/lists/:listId/todos", (req, res) => {
-  Todo.find({listId: req.params.listId}, (err, todos) => {
-    res.json(todos)
-  })
-})
-
 // get individual todo
-router.get("/api/todos/:todoId", (req, res) => {
+router.get("/:todoId", (req, res) => {
   Todo.findById(req.params.todoId, (err, foundTodo) => {
     res.json(foundTodo)
   })
 })
 
 // create new todo
-router.post("/api/todos", (req, res) => {
+router.post("/", (req, res) => {
   Todo.create(req.body, (err, newTodo) => {
     res.json(newTodo)
   })
@@ -42,21 +36,21 @@ router.post("/api/todos", (req, res) => {
 // })
 
 // update todo 
-router.put("/api/todos/:todoId", (req, res) => {
+router.put("/:todoId", (req, res) => {
   Todo.findByIdAndUpdate(req.params.todoId, req.body, {new: true}, (err, updatedTodo) => {
     res.json(updatedTodo)
   })
 })
 
 // delete all 
-router.delete("/api/todos", (req, res) => {
+router.delete("/", (req, res) => {
   Todo.remove({}, (err) => {
     res.send("removed all")
   })
 })
 
 // delete todo 
-router.delete("/api/todos/:todoId", (req, res) => {
+router.delete("/:todoId", (req, res) => {
   Todo.findByIdAndRemove(req.params.todoId, (err, deletedTodo) => {
     res.json(deletedTodo)
   })

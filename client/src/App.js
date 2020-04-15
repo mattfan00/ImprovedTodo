@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import Lists from './Components/Lists/Lists'
-import Login from './Components/Index/Login'
+import LoginPage from './Components/Index/LoginPage'
 
 import { 
   BrowserRouter as Router, 
@@ -11,11 +11,11 @@ import {
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <Router>
         <Switch>
           <Route path="/login">
-            <Login />
+            <LoginPage />
           </Route>
           <Route path="/">
             <Lists />
