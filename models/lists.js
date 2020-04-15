@@ -5,6 +5,10 @@ var listSchema = new mongoose.Schema({
     type: String,
     required: "Cannot be blank"
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  },
   display: {
     type: Boolean,
     default: true

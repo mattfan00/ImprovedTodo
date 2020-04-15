@@ -34,7 +34,7 @@ class App extends Component {
 
   async loadUser() {
     let response = await loadUser()
-    console.log(response)
+    // console.log(response)
 
     if (response.status) {
       this.setState({

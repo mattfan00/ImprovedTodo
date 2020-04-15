@@ -1,53 +1,47 @@
+import axios from 'axios'
+
+var currentToken = localStorage.getItem('token')
+
+var config = {
+  headers: {
+    "Content-type": "application/json",
+    "x-auth-token": currentToken
+  }
+}
+
 export async function getLists() {
-  return fetch('http://localhost:3002/api/lists/')
-  .then((response) => response.json())
+  return axios.get('http://localhost:3002/api/lists/', config)
+  .then(res => res.data)
 }
 
 export async function addList(val) {
-  return fetch('http://localhost:3002/api/lists/', {
-    method: 'post',
-    headers: new Headers({
-      'Content-Type': 'application/json'
-    }),
-    body: JSON.stringify({
-      name: val
-    })
+  var body = JSON.stringify({
+    name: val
   })
-  .then((response) => response.json())
+
+  return axios.post('http://localhost:3002/api/lists/', body, config)
+  .then(res => res.data)
 }
 
 export async function deleteList(list) {
-  return fetch('http://localhost:3002/api/lists/' + list._id, {
-    method: 'delete',
-    headers: new Headers({
-      'Content-Type': 'application/json'
-    })
-  })
-  .then((response) => response.json())
+  return axios.delete('http://localhost:3002/api/lists/' + list._id, config)
+  .then(res => res.data)
 }
 
 export async function updateDisplay(list) {
-  return fetch('http://localhost:3002/api/lists/' + list._id, {
-    method: 'put',
-    headers: new Headers({
-      'Content-Type': 'application/json'
-    }),
-    body: JSON.stringify({
-      display: !list.display
-    })
+  var body = JSON.stringify({
+    display: !list.display
   })
-  .then((response) => response.json())
+
+  return axios.put('http://localhost:3002/api/lists/' + list._id, body, config)
+  .then(res => res.data)
 }
 
 export async function changeAllDisplays(listId, show) {
-  return fetch('http://localhost:3002/api/lists/' + listId, {
-    method: 'put',
-    headers: new Headers({
-      'Content-Type': 'application/json'
-    }),
-    body: JSON.stringify({
-      display: show
-    })
+  var body = JSON.stringify({
+    display: show
   })
-  .then((response) => response.json())
+
+  return axios.put('http://localhost:3002/api/lists/' + listId, body, config)
+  .then(res => res.data)
 }

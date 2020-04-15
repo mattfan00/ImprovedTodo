@@ -1,14 +1,15 @@
 var express = require("express")
     router = express.Router()
     List = require("../models/lists")
+    User = require("../models/users")
 
 
 
 // =============== STANDARD ROUTES =============================
 
-// get all lists
+// get all lists associated with user
 router.get("/", (req, res) => {
-  List.find({}, (err, lists) => {
+  List.find({userId: req.user.id}, (err, lists) => {
     res.json(lists)
   })
 })

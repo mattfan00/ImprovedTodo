@@ -1,45 +1,42 @@
+import axios from 'axios'
+
+var currentToken = localStorage.getItem('token')
+
+var config = {
+  headers: {
+    "Content-type": "application/json",
+    "x-auth-token": currentToken
+  }
+}
+
 export async function getTodos() {
-  return fetch('http://localhost:3002/api/todos')
-  .then((response) => response.json())
+  return axios.get('http://localhost:3002/api/todos', config)
+  .then(res => res.data)
 }
 
 export async function getTodosFromList(listId) {
-  return fetch('http://localhost:3002/api/lists/' + listId + '/todos')
-  .then((response) => response.json())
+  return axios.get('http://localhost:3002/api/lists/' + listId + '/todos', config)
+  .then(res => res.data)
 }
 
 export async function addTodo(val, listId) {
-  return fetch('http://localhost:3002/api/todos', {
-    method: 'post',
-    headers: new Headers({
-      'Content-Type': 'application/json'
-    }),
-    body: JSON.stringify({
-      name: val,
-      listId: listId
-    })
+  var body = JSON.stringify({
+    name: val,
+    listId: listId
   })
-  .then((response) => response.json())
+
+  return axios.post('http://localhost:3002/api/todos', body, config )
+  .then(res => res.data)
 }
 
 
 export async function updateTodo(todoId, updates) {
-  return fetch('http://localhost:3002/api/todos/' + todoId, {
-    method: 'put',
-    headers: new Headers({
-      'Content-Type': 'application/json'
-    }),
-    body: JSON.stringify(updates)
-  })
-  .then((response) => response.json())
+  var body = JSON.stringify(updates)
+  return axios.put('http://localhost:3002/api/todos/' + todoId, body, config)
+  .then(res => res.data)
 }
 
 export async function removeTodo(todo) {
-  return fetch('http://localhost:3002/api/todos/' + todo._id, {
-    method: 'delete',
-    headers: new Headers({
-      'Content-Type': 'application/json'
-    })
-  })
-  .then((response) => response.json())
+  return axios.delete('http://localhost:3002/api/todos/' + todo._id, config)
+  .then(res => res.data)
 }

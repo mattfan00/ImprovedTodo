@@ -11,6 +11,8 @@ var todoRoutes = require("./routes/todos")
     listRoutes = require("./routes/lists")
     userRoutes = require("./routes/users")
 
+var auth = require("./middleware/auth")
+
 app.use(cors())
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -26,8 +28,8 @@ mongoose.connect(db, {
 });
 
 
-app.use("/api/todos", todoRoutes)
-app.use("/api/lists", listRoutes)
+app.use("/api/todos", auth, todoRoutes)
+app.use("/api/lists", auth, listRoutes)
 app.use("/api/users", userRoutes)
 
 app.listen(port, () => {
