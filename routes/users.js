@@ -102,7 +102,7 @@ router.get('/', auth, async (req, res) => {
     if(!user) throw Error('User does not exist')
 
     res.json(user)
-  } catch {
+  } catch(err) {
     res.status(400).json({message: err.message})
   }
 })

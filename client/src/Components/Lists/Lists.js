@@ -172,13 +172,14 @@ class Lists extends Component {
             hideEmptyLists={this.hideEmptyLists}
             displayAllLists={this.displayAllLists}
           />
+          {this.props.user.username}
+          <button onClick={this.props.logout}>Logout</button>
         </div>
         <div className="main">
           <div className="main-grid">
             {activeLists}
           </div>
         </div>
-        
       </div> 
     )
   }
