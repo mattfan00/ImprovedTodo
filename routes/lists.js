@@ -30,7 +30,10 @@ router.get("/:listId/todos", (req, res) => {
 
 // create new list 
 router.post("/", (req, res) => {
-  List.create(req.body, (err, newList) => {
+  List.create({
+    ...req.body,
+    userId: req.user.id
+  }, (err, newList) => {
     res.json(newList)
   })
 })

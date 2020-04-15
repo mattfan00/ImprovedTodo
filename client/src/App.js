@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 
 import Lists from './Components/Lists/Lists'
+import RegisterPage from './Components/Index/RegisterPage';
 import LoginPage from './Components/Index/LoginPage'
 import { loadUser } from './apiCalls/apiUser'
 
@@ -51,7 +52,7 @@ class App extends Component {
     }
   }
 
-  signIn(result) {
+  async signIn(result) {
     localStorage.setItem('token', result.token)
     this.setState({ 
       isLoggedIn: true,
@@ -80,6 +81,12 @@ class App extends Component {
                   isLoggedIn
                   ? <Redirect to='/' />
                   : <LoginPage signIn={this.signIn} />
+                )} 
+              />
+              <Route path='/register' render={props => (
+                  isLoggedIn
+                  ? <Redirect to='/' />
+                  : <RegisterPage signIn={this.signIn} />
                 )} 
               />
               <PrivateRoute path='/' isLoggedIn={isLoggedIn} user={currentUser} logout={this.logout} component={Lists} />

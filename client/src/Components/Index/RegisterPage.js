@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
-import { login } from '../../apiCalls/apiUser'
+import { register } from '../../apiCalls/apiUser'
+ 
+import { Link } from 'react-router-dom'
 
-import {
-  Link
-} from "react-router-dom";
-
-class LoginPage extends Component {
+class RegisterPage extends Component {
   constructor(props) {
     super(props)
 
@@ -19,12 +17,10 @@ class LoginPage extends Component {
     this.handlePassword = this.handlePassword.bind(this)
   }
 
-  
-
   async handleSubmit(e) {
     e.preventDefault()
 
-    let result = await login(this.state.username, this.state.password)
+    let result = await register(this.state.username, this.state.password)
     this.setState({
       username: '',
       password: ''
@@ -46,20 +42,18 @@ class LoginPage extends Component {
     const { username, password } = this.state
     return (
       <div>
-        <h3>Login</h3>
+        <h3>Register</h3>
         <form onSubmit={this.handleSubmit}>
           <input value={username} onChange={this.handleUsername}></input>
           <input value={password} type="password" onChange={this.handlePassword}></input>
-          <button>Login</button> 
+          <button>Register</button> 
         </form>
         <div>
-          Don't have an account? <Link to='/register'>Sign up</Link>
+          Have an account already? <Link to="/login">Sign in</Link>
         </div>
       </div>
-      
-      
     )
   }
 }
 
-export default LoginPage
+export default RegisterPage
