@@ -52,7 +52,7 @@ class App extends Component {
     }
   }
 
-  async signIn(result) {
+  signIn(result) {
     localStorage.setItem('token', result.token)
     this.setState({ 
       isLoggedIn: true,
@@ -104,7 +104,7 @@ function PrivateRoute({ component: Component, ...rest }) {
   return (
     <Route {...rest} render={props => (
       rest.isLoggedIn 
-        ? <Component {...props} user={rest.user} logout={rest.logout} />
+        ? <Component key={rest.user.id} {...props} user={rest.user} logout={rest.logout} />
         : <Redirect to='/login' />
       )}
     />
