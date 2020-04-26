@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 
 import Lists from './Components/Lists/Lists'
-import RegisterPage from './Components/Index/RegisterPage';
+import RegisterPage from './Components/Index/RegisterPage'
 import LoginPage from './Components/Index/LoginPage'
 import { loadUser } from './apiCalls/apiUser'
 
@@ -100,11 +100,17 @@ class App extends Component {
 }
 
 function PrivateRoute({ component: Component, ...rest }) {
-  // console.log(rest)
   return (
     <Route {...rest} render={props => (
       rest.isLoggedIn 
-        ? <Component key={rest.user.id} {...props} user={rest.user} logout={rest.logout} />
+        ? <Component 
+            // key is essential to have because everytime a new key is generated, the component
+            // remounts which allows for the new list associated with the user to load
+            key={rest.user.id} 
+            {...props} 
+            user={rest.user} 
+            logout={rest.logout} 
+          />
         : <Redirect to='/login' />
       )}
     />

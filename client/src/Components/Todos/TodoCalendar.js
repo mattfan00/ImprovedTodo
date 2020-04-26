@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import moment from 'moment'
 
-class Calendar extends Component {
+class TodoCalendar extends Component {
   constructor(props) {
     super(props)
 
@@ -145,4 +145,4 @@ class Calendar extends Component {
   }
 }
 
-export default Calendar
+export default TodoCalendar

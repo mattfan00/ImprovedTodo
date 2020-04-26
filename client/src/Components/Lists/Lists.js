@@ -3,8 +3,15 @@ import AddList from './AddList'
 import ListHeader from './ListHeader'
 import DockedList from './DockedList'
 import ChangeListDisplays from './ChangeListDisplays'
+import Calendar from '../Calendar/Calendar'
 import * as listCalls from '../../apiCalls/apiList'
 import * as todoCalls from '../../apiCalls/apiTodo'
+
+import { 
+  BrowserRouter as Router, 
+  Switch, 
+  Route
+} from 'react-router-dom';
 
 class Lists extends Component {
   constructor(props) {
@@ -177,7 +184,16 @@ class Lists extends Component {
         </div>
         <div className="main">
           <div className="main-grid">
-            {activeLists}
+            <Router>
+              <Switch>
+                <Route path='/calendar'>
+                  <Calendar />
+                </Route>
+                <Route path='/'>
+                  {activeLists}                
+                </Route>
+              </Switch>
+            </Router>
           </div>
         </div>
       </div> 

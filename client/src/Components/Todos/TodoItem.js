@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Calendar from './Calendar'
+import TodoCalendar from './TodoCalendar'
 import moment from 'moment'
 
 class TodoItem extends Component {
@@ -123,7 +123,7 @@ class TodoItem extends Component {
                     this.dropdownMenu = element;
                   }}
                 >
-                  <Calendar 
+                  <TodoCalendar 
                     todoId={this.props.todoId}  
                     due={this.props.due}
                     changeDueDate={this.props.changeDueDate}
