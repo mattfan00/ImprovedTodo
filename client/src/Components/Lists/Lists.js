@@ -148,7 +148,7 @@ class Lists extends Component {
 
 
   render() {
-    const activeLists = this.state.activeLists.map(list => 
+    const activeListsAgenda = this.state.activeLists.map(list => 
       <ListHeader 
         key={list._id}
         listId={list._id}
@@ -187,10 +187,10 @@ class Lists extends Component {
             <Router>
               <Switch>
                 <Route path='/calendar'>
-                  <Calendar />
+                  <Calendar activeLists={this.state.activeLists} />
                 </Route>
                 <Route path='/'>
-                  {activeLists}                
+                  {activeListsAgenda}                
                 </Route>
               </Switch>
             </Router>
